@@ -1,0 +1,135 @@
+/* Ajoutez ces styles à la fin de votre fichier CSS */
+
+/* Gallery Section */
+.gallery-section {
+  background-color: var(--gray-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.gallery-section h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.photo-item {
+  background-color: var(--dark-color);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.photo-item:hover {
+  transform: translateY(-5px);
+}
+
+.photo-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.photo-info {
+  padding: 1rem;
+}
+
+.photo-info h3 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.photo-info p {
+  color: var(--light-gray);
+  font-size: 0.8rem;
+}
+
+/* Extended Activity */
+.recent-activity.extended .activity-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.recent-activity.extended .activity-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.recent-activity.extended .activity-list::-webkit-scrollbar-track {
+  background: var(--dark-color);
+}
+
+.recent-activity.extended .activity-list::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+/* Additional Content */
+.additional-content {
+  background-color: var(--gray-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.additional-content h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.content-card {
+  background-color: var(--dark-color);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.content-card:hover {
+  transform: translateY(-5px);
+}
+
+.content-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.content-card h3 {
+  padding: 1rem 1rem 0.5rem;
+  color: var(--primary-color);
+}
+
+.content-card p {
+  padding: 0 1rem 1rem;
+  color: var(--light-gray);
+  font-size: 0.9rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .photo-grid, .content-grid {
+      grid-template-columns: 1fr;
+  }
+  
+  .photo-item img, .content-card img {
+      height: auto;
+  }
+}
