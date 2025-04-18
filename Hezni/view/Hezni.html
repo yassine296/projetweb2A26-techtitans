@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Hezni - Recharger votre solde</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../view/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="recharge-header">
+    <div class="header-content">
+      <img src="logo_blanc.png" alt="Hezni" class="logo">
+      <h1>Recharger votre solde</h1>
+    </div>
+    <div class="wave-bottom">
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path d="M0,200 C360,600 1080,-150 1440,300 L1440,320 L0,320 Z"></path>
+      </svg>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="recharge-container">
+    <!-- Section Solde -->
+    <section class="balance-section">
+      <div class="balance-card">
+        <h2><i class="fas fa-wallet"></i> Votre solde</h2>
+        <div class="balance-amount">
+          <span id="current-balance"><?= $solde_actuel ?></span> 14 TND
+        </div>
+        <div class="balance-history">
+          <h3>Historique des recharges</h3>
+          <div class="history-list">
+            <!-- L'historique sera gérée dynamiquement après(en fonction de l'utilisateur connecté-->
+            <div class="history-item">
+              <span class="amount">+50.000 TND</span>
+              <span class="date">17/04/2025</span>
+              <span class="status completed">Complétée</span>
+            </div>
+            <div class="history-item">
+              <span class="amount">+20.000 TND</span>
+              <span class="date">15/04/2025</span>
+              <span class="status pending">En attente</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Section Formulaire -->
+    <section class="form-section">
+      <form action="../controller/rechargecontroller.php" method="post" class="recharge-form">
+        <h2><i class="fas fa-coins"></i> Nouvelle recharge</h2>
+        
+        <input type="hidden" name="soldetotal" id="soldetotal" value="<?= $solde_actuel ?>">
+        <input type="hidden" name="statut" value="en attente">
+        
+        <div class="form-group">
+          <label for="id_utilisateur">ID Utilisateur</label>
+          <input type="text" name="idu" id="id_utilisateur" >
+        </div>
+        
+        <div class="form-group">
+          <label for="montant">Montant (TND)</label>
+          <div class="amount-selector">
+            <button type="button" class="amount-btn" data-amount="10">10</button>
+            <button type="button" class="amount-btn" data-amount="20">20</button>
+            <button type="button" class="amount-btn" data-amount="50">50</button>
+            <button type="button" class="amount-btn" data-amount="100">100</button>
+          </div>
+          <input type="number" name="montant" id="montant" min="1" step="0.001" >
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" name="date" id="date" >
+          </div>
+          <div class="form-group">
+            <label for="time">Heure</label>
+            <input type="time" name="temps" id="time" >
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="numcarte">Numéro de carte</label>
+          <input type="text" name="numcarte" id="numcarte" placeholder="1234 5678 9012 3456" >
+        </div>
+        
+        <button type="submit" name="ajouter" class="submit-btn">
+          <i class="fas fa-plus-circle"></i> Confirmer la recharge
+        </button>
+        
+        <div id="confirmation-message" class="confirmation-message">
+          Recharge effectuée avec succès! Votre nouveau solde est: <span id="new-balance"></span> TND
+        </div>
+      </form>
+
+
+
+
+      
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="recharge-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Hezni</h3>
+        <ul>
+          <li><a href="#">À propos de nous</a></li>
+          <li><a href="#">Comment ça marche</a></li>
+          <li><a href="#">Sécurité</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Assistance</h3>
+        <ul>
+          <li><a href="#">Centre d'aide</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Informations</h3>
+        <ul>
+          <li><a href="#">Presse</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Carrières</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      &copy; 2023 Hezni. Tous droits réservés.
+    </div>
+  </footer>
+
+  <script>
+
+
+
+
+
+document.querySelector(".recharge-form").addEventListener("submit", function(e) {
+  let valid = true;
+  const idUtilisateur = document.getElementById("id_utilisateur");
+  const montant = document.getElementById("montant");
+  const date = document.getElementById("date");
+  const time = document.getElementById("time");
+  const numcarte = document.getElementById("numcarte");
+
+  // Réinitialiser les styles
+  [idUtilisateur, montant, date, time, numcarte].forEach(input => {
+    input.style.border = "";
+  });
+
+  // Vérification des champs obligatoires
+  if (
+    !idUtilisateur.value.trim() || 
+    !montant.value ||
+    !date.value || 
+    !time.value ||
+    !numcarte.value.trim()
+  ) {
+    alert("Tous les champs sont obligatoires.");
+    valid = false;
+  }
+
+  // Vérification montant positif
+  if (isNaN(montant.value) || Number(montant.value) <= 0) {
+    alert("Le montant doit être un nombre positif.");
+    montant.style.border = "2px solid red";
+    valid = false;
+  }
+
+  // Vérification date/heure future
+  const selectedDateTime = new Date(date.value + 'T' + time.value);
+  const now = new Date();
+  
+  if (selectedDateTime <= now) {
+    alert("La date et l'heure doivent être dans le futur.");
+    date.style.border = "2px solid red";
+    time.style.border = "2px solid red";
+    valid = false;
+  }
+
+  // Vérification format numéro de carte (16 chiffres avec espaces optionnels)
+  const cardRegex = /^\d{4}\s*\d{4}\s*\d{4}\s*\d{4}$/;
+  if (!cardRegex.test(numcarte.value.trim())) {
+    alert("Le numéro de carte doit contenir 16 chiffres au format valide (ex: 1234 5678 9012 3456).");
+    numcarte.style.border = "2px solid red";
+    valid = false;
+  }
+
+  if (!valid) {
+    e.preventDefault();
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Pré-remplir la date et l'heure
+      const now = new Date();
+      document.getElementById('date').value = now.toISOString().split('T')[0];
+      document.getElementById('time').value = now.toTimeString().substr(0, 5);
+      
+      // Boutons de montant prédéfini
+      document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.getElementById('montant').value = this.dataset.amount;
+        });
+      });
+      
+      // Formatage du numéro de carte
+      const cardInput = document.getElementById('numcarte');
+      cardInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\s+/g, '');
+        if (value.length > 0) {
+          value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+        }
+        e.target.value = value;
+      });
+    });
+  </script>
+</body>
+</html>
