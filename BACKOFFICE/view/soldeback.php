@@ -150,6 +150,15 @@
           <label>Numero de carte:</label>
           <input type="number" name="numcarte" id="editNumcarte" step="0.001" required>
         </div>
+        <div class="form-group">
+          <label>Date:</label>
+          <input type="date" name="date" id="editDate" required>
+        </div>
+
+        <div class="form-group">
+          <label>Solde Total:</label>
+          <input type="number" name="soldetotal" id="editSoldetotal" step="0.001" required>
+        </div>
 
         <div class="form-group">
           <label>Montant (DT):</label>
@@ -170,16 +179,23 @@
       const modal = document.getElementById('editModal');
       
       // Ouvrir le modal et pré-remplir les données
-      document.querySelectorAll('.btn-modifier').forEach(btn => {
-          btn.addEventListener('click', function() {
-              const row = this.closest('tr');
-              document.getElementById('editId').value = row.cells[0].textContent;
-              document.getElementById('editMontant').value = parseFloat(row.cells[2].textContent.replace(/,/g, ''));
-              document.getElementById('editStatut').value = row.cells[6].textContent.trim();
-              
-              modal.style.display = 'block';
-          });
-      });
+       document.querySelectorAll('.btn-modifier').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const row = this.closest('tr');
+            document.getElementById('editId').value = row.cells[0].textContent;
+            document.getElementById('editIdu').value = row.cells[1].textContent;
+            document.getElementById('editMontant').value = parseFloat(row.cells[2].textContent.replace(/,/g, ''));
+            // Pour la date, vous devrez peut-être ajuster selon le format stocké
+            document.getElementById('editNumcarte').value = parseFloat(row.cells[4].textContent.replace(/,/g, ''));
+           
+            document.getElementById('editDate').value = row.cells[3].textContent.trim();
+             document.getElementById('editStatut').value = row.cells[6].textContent.trim();
+
+           
+            
+            modal.style.display = 'block';
+        });
+    });
       
       // Fermer le modal
       document.querySelector('.close-modal').addEventListener('click', function() {

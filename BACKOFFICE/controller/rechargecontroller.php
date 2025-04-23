@@ -1,16 +1,21 @@
 <?php
 
+require_once '../model/recharge.php';
+require_once '../config/connexion.php';
 
-
-
-
+//deepseek
 // Gestion de la modification
 if (isset($_POST['modifier'])) {
     $recharge = new recharge();
     $recharge->setIdr($_POST['idr']);
+    $recharge->setIdu($_POST['idu']);
+    $recharge->setDate($_POST['date']);
+    $recharge->setNumcarte($_POST['numcarte']);
+    $recharge->setMontant($_POST['montant']);
+    $recharge->setSoldetotal($_POST['soldetotal']);
     $recharge->setStatut($_POST['statut']);
     
-    if ($recharge->update()) {
+    if ($recharge->modifier()) {
         header("Location: rechargecontroller.php?success=1");
         exit();
     } else {
@@ -20,8 +25,16 @@ if (isset($_POST['modifier'])) {
 }
 
 
-require_once '../model/recharge.php';
-require_once '../config/connexion.php';
+
+
+
+
+
+
+
+
+
+
 
 if (isset($_POST['ajouter'])) {
     $recharge = new recharge(
@@ -73,6 +86,21 @@ if (isset($_GET['action']) && $_GET['action'] === 'supprimer' && isset($_GET['id
         echo "❌ Erreur lors de la suppression";
     }
 }
+
+
+
+
+
+//deepseek
+// Récupération des données pour affichage
+try {
+    $rechargeModel = new recharge();
+    $recharges = $rechargeModel->getAllrecharge();
+} catch (Exception $e) {
+    error_log('Erreur lors de la récupération des recharges: ' . $e->getMessage());
+    $recharges = [];
+}
+
 
 
 ?>
