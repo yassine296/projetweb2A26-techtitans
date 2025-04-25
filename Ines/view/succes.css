@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    font-family: Poppins, sans-serif;
+    background-color: #f44336;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .text-section {
+    max-width: 60%;
+    margin-left: -20px; /* Décale le texte un peu à gauche */
+  }
+  .text-section h2 {
+    font-size: 40px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 120px; /* Pour baisser un peu le texte */
+    margin-left: 20px; 
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    max-width: 500px;
+    display: flex;
+
+  }
