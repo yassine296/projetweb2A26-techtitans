@@ -17,7 +17,11 @@ class config
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                 ]
                 );
+<<<<<<< HEAD
                 echo "connected  successfully";
+=======
+                /*echo "connected  successfully";*/
+>>>>>>> bfbf316 (second commit)
             }catch(Exception $e){
                 die('Erreur: '.$e->getMessage());
             }

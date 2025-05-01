@@ -1,5 +1,22 @@
+<<<<<<< HEAD
 
 <!DOCTYPE html>
+=======
+<!DOCTYPE html>
+<?php
+session_start(); // <-- Ajoutez cette ligne
+// Initialisation des variables de notification
+$driverId = 1; // ID temporaire du conducteur
+$unreadCount = 0;
+
+if (isset($_SESSION['driver_notifications'][$driverId])) {
+    $unreadCount = count(array_filter(
+        $_SESSION['driver_notifications'][$driverId],
+        function($n) { return !$n['read']; }
+    ));
+}
+?>
+>>>>>>> bfbf316 (second commit)
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -9,7 +26,261 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <!--<link rel="stylesheet" href="style.css">-->
+<<<<<<< HEAD
   <link rel="stylesheet" href="../view/style.css"> <!-- Adaptez le chemin selon votre structure -->
+=======
+  <link rel="stylesheet" href="../view/style.css"> 
+
+  <style>
+/* ====================== */
+/* NOTIFICATIONS STYLES */
+/* ====================== */
+
+.notifications-wrapper {
+  position: absolute;
+  top: 30px;
+  right: 80px; /* Ajustez selon l'espace nécessaire */
+  z-index: 105;
+}
+
+.notifications-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  padding: 8px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.notifications-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+  color: #ffcdd2;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #ff0000;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+  border: 2px solid white;
+}
+
+.notifications-dropdown {
+  display: none;
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 350px;
+  max-height: 500px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border: 1px solid #e0e0e0;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notification-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #f44336;
+  border-radius: 10px 10px 0 0;
+  color: white;
+}
+
+.notification-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.unread-count {
+  background: white;
+  color: #f44336;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.notification-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.notification-item {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.notification-item:hover {
+  background: #fff5f5;
+}
+
+.notification-item.unread {
+  background: #fff0f0;
+  border-left: 3px solid #f44336;
+}
+
+.notification-icon {
+  margin-right: 12px;
+  color: #f44336;
+  font-size: 18px;
+  margin-top: 3px;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-message {
+  margin: 0 0 5px 0;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.notification-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notification-date {
+  color: #888;
+  font-size: 12px;
+}
+
+.new-badge {
+  background: #f44336;
+  color: white;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
+}
+
+.notification-empty {
+  padding: 30px 20px;
+  text-align: center;
+  color: #888;
+}
+
+.notification-empty i {
+  font-size: 24px;
+  margin-bottom: 10px;
+  display: block;
+  color: #ddd;
+}
+
+.notification-empty p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Animation pour nouvelles notifications */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.notification-badge.pulse {
+  animation: pulse 1s infinite;
+}
+
+/* Highlight animation */
+@keyframes highlight {
+  0% { background-color: rgba(244, 67, 54, 0.1); }
+  50% { background-color: rgba(244, 67, 54, 0.3); }
+  100% { background-color: rgba(244, 67, 54, 0.1); }
+}
+
+.highlight {
+  animation: highlight 1s ease;
+}
+
+/* Scrollbar styling */
+.notifications-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notifications-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.notifications-dropdown::-webkit-scrollbar-thumb {
+  background: #f44336;
+  border-radius: 10px;
+}
+
+.notifications-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #d32f2f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notifications-wrapper {
+    right: 60px;
+  }
+  
+  .notifications-dropdown {
+    width: 300px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notifications-wrapper {
+    right: 50px;
+  }
+  
+  .notifications-dropdown {
+    width: 280px;
+  }
+}
+  </style>
+>>>>>>> bfbf316 (second commit)
 
 </head>
 <body>
@@ -20,11 +291,65 @@
     <span></span>
   </div>
 
+<<<<<<< HEAD
+=======
+  <div class="notifications-wrapper">
+    <button class="notifications-btn">
+        <i class="fas fa-bell"></i>
+        <?php if ($unreadCount > 0) : ?>
+            <span class="notification-badge"><?= $unreadCount ?></span>
+        <?php endif; ?>
+    </button>
+    
+    <div class="notifications-dropdown">
+        <div class="notification-header">
+            <h4>Notifications <?php if ($unreadCount > 0) : ?><span class="unread-count"><?= $unreadCount ?> non lues</span><?php endif; ?></h4>
+        </div>
+        
+        <?php if (!empty($_SESSION['driver_notifications'][$driverId])) : ?>
+            <div class="notification-list">
+                <?php foreach ($_SESSION['driver_notifications'][$driverId] as $index => $notification) : ?>
+                    <div class="notification-item <?= $notification['read'] ? 'read' : 'unread' ?>" 
+                        data-index="<?= $index ?>">
+                        <div class="notification-icon">
+                            <i class="fas fa-suitcase"></i>
+                        </div>
+                        <div class="notification-content">
+                            <p class="notification-message"><?= htmlspecialchars($notification['message']) ?></p>
+                            <div class="notification-meta">
+                                <span class="notification-date"><?= htmlspecialchars($notification['date']) ?></span>
+                                <?php if (!$notification['read']) : ?>
+                                    <span class="new-badge">Nouveau</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else : ?>
+            <div class="notification-empty">
+                <i class="far fa-bell-slash"></i>
+                <p>Aucune notification</p>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+
+>>>>>>> bfbf316 (second commit)
   <header class="hero">
     <img src="../view/logo blanc.png" alt="Hezni" class="logo">
     <!--<div class="hero-text">
       HEZNI - Le premier site de <span>covoiturage étudiant</span> en Tunisie
     </div>-->
+<<<<<<< HEAD
+=======
+
+    
+
+
+
+>>>>>>> bfbf316 (second commit)
     <div class="voiture">
       <img src="../view/image.png" alt="voiture" class="voiture">
     </div>
@@ -41,6 +366,7 @@
   <h2 class="form-title">Ajoutez votre trajet</h2>
 
   
+<<<<<<< HEAD
   <input type="text" name="ville_depart" placeholder="Ville de départ" id="departure" >
   
   <input type="text" name="ville_arrive" placeholder="Ville d'arrivée" id="destination" >
@@ -55,6 +381,22 @@
   <input type="number" name="nb_place" placeholder="Nombre de places disponibles" id="places" min="1" >
   
   <input type="number" name="prix" placeholder="prix d'une place" id="prix" >
+=======
+  <input type="text" name="ville_depart" placeholder="Ville de départ" id="departure" required>
+  
+  <input type="text" name="ville_arrive" placeholder="Ville d'arrivée" id="destination" required>
+
+
+  <div class="row">
+    <input type="date" name="date" placeholder="Date d'aller" id="date-depart" required>
+    <input type="time" name="heure" placeholder="Heure de départ" id="time-depart" required>
+  </div>
+  
+
+  <input type="number" name="nb_place" placeholder="Nombre de places disponibles" id="places" min="1" required>
+  
+  <input type="number" name="prix" placeholder="prix d'une place" id="prix" required>
+>>>>>>> bfbf316 (second commit)
   
   <textarea name="commentaire" id="commentaire" placeholder="Commentaire (ex : bagages légers uniquement)" rows="3"></textarea>
 
@@ -64,6 +406,10 @@
   </button>
 </form>
 <!--fin formulaire -->
+<<<<<<< HEAD
+=======
+
+>>>>>>> bfbf316 (second commit)
 <!--formulaire de modification-->
 <!-- Formulaire de modification (caché par défaut) -->
 <div id="modifier-form-container" style="<?= isset($annonceAModifier) ? 'display: block;' : 'display: none;' ?>">
@@ -73,6 +419,7 @@
         <input type="hidden" name="id" value="<?= isset($annonceAModifier) ? htmlspecialchars($annonceAModifier['id']) : '' ?>">
         
         <input type="text" name="ville_depart" placeholder="Ville de départ" 
+<<<<<<< HEAD
                value="<?= isset($annonceAModifier) ? htmlspecialchars($annonceAModifier['ville_depart']) : '' ?>" >
         
         <input type="text" name="ville_arrive" placeholder="Ville d'arrivée" 
@@ -90,6 +437,25 @@
         
         <input type="number" name="prix" placeholder="prix d'une place" 
                value="<?= isset($annonceAModifier) ? htmlspecialchars($annonceAModifier['prix']) : '' ?>" >
+=======
+               value="<?= isset($annonceAModifier) ? htmlspecialchars($annonceAModifier['ville_depart']) : '' ?>" required>
+        
+        <input type="text" name="ville_arrive" placeholder="Ville d'arrivée" 
+               value="<?= isset($annonceAModifier) ? htmlspecialchars($annonceAModifier['ville_arrive']) : '' ?>" required>
+
+        <div class="row">
+            <input type="date" name="date" placeholder="Date d'aller" 
+                   value="<?= isset($annonceAModifier) ? htmlspecialchars($annonceAModifier['date']) : '' ?>" required>
+            <input type="time" name="heure" placeholder="Heure de départ" 
+                   value="<?= isset($annonceAModifier) ? htmlspecialchars($annonceAModifier['heure']) : '' ?>" required>
+        </div>
+        
+        <input type="number" name="nb_place" placeholder="Nombre de places disponibles" 
+               value="<?= isset($annonceAModifier) ? htmlspecialchars($annonceAModifier['nb_place']) : '' ?>" min="1" required>
+        
+        <input type="number" name="prix" placeholder="prix d'une place" 
+               value="<?= isset($annonceAModifier) ? htmlspecialchars($annonceAModifier['prix']) : '' ?>" required>
+>>>>>>> bfbf316 (second commit)
         
         <textarea name="commentaire" placeholder="Commentaire" rows="3"><?= isset($annonceAModifier) ? htmlspecialchars($annonceAModifier['commentaire']) : '' ?></textarea>
 
@@ -111,6 +477,7 @@
       
     </div>
 
+<<<<<<< HEAD
     <!--
 
   <div class="card-container">
@@ -145,6 +512,9 @@
 
        
     </div>-->
+=======
+   
+>>>>>>> bfbf316 (second commit)
     <div class="card-container">
     <?php
     // Plus besoin de require le modèle ici, les données doivent déjà être passées via le contrôleur
@@ -349,6 +719,70 @@
 
 
 
+<<<<<<< HEAD
+=======
+
+// Gestion des notifications
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestion de l'ouverture/fermeture du dropdown
+    document.querySelector('.notifications-btn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        const dropdown = document.querySelector('.notifications-dropdown');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Fermer le dropdown quand on clique ailleurs
+    document.addEventListener('click', function() {
+        document.querySelector('.notifications-dropdown').style.display = 'none';
+    });
+
+    // Empêcher la fermeture quand on clique dans le dropdown
+    document.querySelector('.notifications-dropdown').addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    // Marquer une notification comme lue quand on clique dessus
+    document.querySelectorAll('.notification-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            if (!this.classList.contains('read')) {
+                // Envoyer une requête AJAX pour marquer comme lue
+                fetch('markNotificationRead.php?index=' + index)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.classList.add('read');
+                            const dot = this.querySelector('.notification-dot');
+                            if (dot) dot.remove();
+                            
+                            // Mettre à jour le badge
+                            const badge = document.querySelector('.notification-badge');
+                            if (badge) {
+                                const count = parseInt(badge.textContent) - 1;
+                                if (count > 0) {
+                                    badge.textContent = count;
+                                } else {
+                                    badge.remove();
+                                }
+                            }
+                        }
+                    });
+            }
+        });
+    });
+
+    // Animation pour nouvelles notifications
+    function showNewNotification() {
+        const badge = document.querySelector('.notification-badge');
+        if (badge) {
+            badge.classList.add('pulse');
+            setTimeout(() => badge.classList.remove('pulse'), 1000);
+        }
+    }
+});
+
+
+>>>>>>> bfbf316 (second commit)
   </script>
 </body>
 </html>

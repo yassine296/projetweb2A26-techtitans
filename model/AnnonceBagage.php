@@ -9,6 +9,10 @@ class annonce_bagages {
     private $commentaire;
     private $date_publication;
     private $prix;
+<<<<<<< HEAD
+=======
+    private $conducteur_id;
+>>>>>>> bfbf316 (second commit)
 
     // Constructeur
     public function __construct($ville_depart=null, $ville_arrive=null, $date=null, $heure=null, $nb_place=null, $commentaire=null,$prix=null) {
@@ -31,6 +35,10 @@ class annonce_bagages {
     public function getCommentaire() { return $this->commentaire; }
     public function getDatePublication() { return $this->date_publication; }
     public function getPrix() { return $this->prix; }
+<<<<<<< HEAD
+=======
+    public function getconducteur_id() { return $this->conducteur_id; }
+>>>>>>> bfbf316 (second commit)
 
 
     // Setters
@@ -45,8 +53,13 @@ class annonce_bagages {
 
 //ajouter dans le formulaire 
     public function create() {
+<<<<<<< HEAD
         $sql = "INSERT INTO annonce_bagages (ville_depart, ville_arrive, date, heure, nb_place, commentaire,prix)
                 VALUES (:ville_depart, :ville_arrive, :date, :heure, :nb_place, :commentaire, :prix)";
+=======
+        $sql = "INSERT INTO annonce_bagages (ville_depart, ville_arrive, date, heure, nb_place, commentaire,prix, conducteur_id)
+                VALUES (:ville_depart, :ville_arrive, :date, :heure, :nb_place, :commentaire, :prix, 1)";
+>>>>>>> bfbf316 (second commit)
         
         $db = config::getConnexion();
         try {
@@ -68,9 +81,15 @@ class annonce_bagages {
     }
 
 // Affichage 
+<<<<<<< HEAD
   
     public function getAllBagages() {
         $sql = "SELECT * FROM annonce_bagages";
+=======
+   
+    public function getAllBagages() {
+        $sql = "SELECT * FROM annonce_bagages WHERE nb_place > 0";
+>>>>>>> bfbf316 (second commit)
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -80,7 +99,11 @@ class annonce_bagages {
             error_log('Erreur dans getAllBagages: ' . $e->getMessage());
             return []; // Retourne un tableau vide en cas d'erreur
         }
+<<<<<<< HEAD
     } 
+=======
+    }
+>>>>>>> bfbf316 (second commit)
     
 //supprimer
 public function delete($id) {
@@ -144,5 +167,47 @@ public function update($id, $ville_depart, $ville_arrive, $date, $heure, $nb_pla
     }
 }
 
+<<<<<<< HEAD
+=======
+
+
+
+public function updatePlaces($id, $places_reservees) {
+    $sql = "UPDATE annonce_bagages SET nb_place = nb_place - :places_reservees WHERE id = :id";
+    $db = config::getConnexion();
+    try {
+        $query = $db->prepare($sql);
+        return $query->execute([
+            'id' => $id,
+            'places_reservees' => $places_reservees
+        ]);
+    } catch (Exception $e) {
+        error_log('Erreur dans updatePlaces: ' . $e->getMessage());
+        return false;
+    }
+}
+// AnnonceBagage.php
+public function updatePlacesM($id_annonce, $difference) {
+    $sql = "UPDATE annonce_bagages 
+            SET nb_place = nb_place + :difference 
+            WHERE id = :id_annonce";
+    
+    $db = config::getConnexion();
+    try {
+        $query = $db->prepare($sql);
+        $query->execute([
+            'difference' => $difference,
+            'id_annonce' => $id_annonce
+        ]);
+        return true;
+    } catch (Exception $e) {
+        error_log('Erreur updatePlaces: ' . $e->getMessage());
+        return false;
+    }
+}
+
+
+
+>>>>>>> bfbf316 (second commit)
 }
 ?>

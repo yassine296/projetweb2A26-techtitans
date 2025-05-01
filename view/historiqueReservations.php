@@ -1,0 +1,279 @@
+<?php
+session_start();
+require_once '../model/reserverModel.php';
+require_once '../config/connexion.php';
+
+// Récupérer les réservations
+$reservations = [];
+try {
+    $reservations = reservation_bagage::getReservations();
+} catch (Exception $e) {
+    $errorMessage = "Erreur de chargement de l'historique: ".$e->getMessage();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Hezni - Historique des réservations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../view/style.css">
+  <style>
+    .history-container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .back-btn {
+        background-color: #ff3c3c; /* Rouge vif comme dans votre back-btn */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 24px;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(255, 60, 60, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto 0;
+    margin-left: 0px;
+    }
+    .back-btn:hover {
+        background-color: #e63535;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 60, 60, 0.3);
+    }
+
+    .back-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(255, 60, 60, 0.2);
+}
+
+/* Icône Font Awesome */
+.back-btn i {
+    font-size: 18px;
+}
+
+.section-title2 {
+    font-size: 28px;
+    color: #f44336;
+    /*text-align: left;*/
+    margin: 20px auto 0;
+  }
+
+
+
+  .reservation-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: flex-end;
+}
+
+.action-form {
+    margin: 0; /* Pour éviter les marges parasites */
+}
+
+.action-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+}
+
+.delete-btn {
+    background-color: #ff3c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #e63535;
+}
+
+.edit-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #45a049;
+}
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <img src="../view/logo blanc.png" alt="Hezni" class="logo">
+    <div class="wave-bottom">
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path d="M0,200 C360,600 1080,-150 1440,300 L1440,320 L0,320 Z"></path>
+      </svg>
+    </div>-
+  </header>
+
+  <div class="history-container">
+    <a href="../controller/reserverController.php" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Retour aux trajets
+    </a>
+    
+    <h1 class="section-title2">Mon historique de réservations</h1>
+    
+    <?php if (!empty($reservations)): ?>
+      <div class="card-container">
+        <?php foreach ($reservations as $reservation): ?>
+        
+        <div class="card" data-reservation-id="<?= $reservation['id'] ?>">
+          <div class="card-content">
+            
+            <div class="ride-info">
+              <div class="ride-info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span><?= htmlspecialchars($reservation['ville_depart']) ?> → <?= htmlspecialchars($reservation['ville_arrive']) ?></span>
+              </div>
+              <div class="ride-info-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span><?= date('d M Y', strtotime($reservation['date'])) ?></span>
+              </div>
+              <div class="ride-info-item">
+                <i class="fas fa-clock"></i>
+                <span><?= htmlspecialchars($reservation['heure']) ?></span>
+              </div>
+              <div class="ride-info-item">
+                <i class="fas fa-suitcase"></i>
+                <span><?= htmlspecialchars($reservation['nb_places']) ?> places</span>
+              </div>
+              <div class="ride-info-item">
+                <i class="fas fa-tag"></i>
+                <span>Type: <?= htmlspecialchars($reservation['type_bagage']) ?></span>
+              </div>
+            </div>
+            <div class="price"><?= htmlspecialchars($reservation['prix_total']) ?> DT</div>
+            <div class="reservation-date">
+              Réservé le: <?= date('d M Y H:i', strtotime($reservation['date_reservation'])) ?>
+            </div>
+            <!-- Ajoutez cette nouvelle section pour les boutons -->
+        <div class="reservation-actions">
+            
+            <form method="post" action="../controller/reserverController.php" class="action-form" 
+                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation?');">
+                <input type="hidden" name="reservation_id" value="<?= $reservation['id'] ?>">
+                <button type="submit" class="action-btn delete-btn">
+                    <i class="fas fa-trash-alt"></i> Supprimer
+                </button>
+            </form>
+                        
+            <button class="action-btn edit-btn" onclick="openEditModal(<?= $reservation['id'] ?>)">
+                <i class="fas fa-edit"></i> Modifier
+            </button>
+        </div>
+
+          </div>
+        </div>
+        <?php endforeach; ?>
+      </div>
+    <?php else: ?>
+      <p class="no-reservations">Aucune réservation trouvée.</p>
+    <?php endif; ?>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="copyright">
+        &copy; 2023 Hezni. Tous droits réservés.
+      </div>
+    </div>
+  </footer>
+  
+
+
+
+
+<!-- Popup de modification -->
+<div class="popup-overlay" id="editPopup">
+    <div class="popup-content">
+        <div class="popup-header">
+            <h3>Modifier la réservation</h3>
+            <button class="close-popup">&times;</button>
+        </div>
+        <div class="popup-body" id="editPopupBody">
+            <!-- Le contenu sera injecté ici par JavaScript -->
+        </div>
+    </div>
+</div>
+<script>
+    // Fonction pour ouvrir la popup de modification
+    function openEditModal(reservationId) {
+        // Récupérer les données de la réservation (vous devrez peut-être les passer depuis PHP)
+        const card = document.querySelector(`.card[data-reservation-id="${reservationId}"]`);
+        if (!card) return;
+        
+        const nbPlaces = card.querySelector('.ride-info-item:nth-child(4) span').textContent.match(/\d+/)[0];
+        const typeBagage = card.querySelector('.ride-info-item:nth-child(5) span').textContent.replace('Type: ', '');
+        const prixTotal = card.querySelector('.price').textContent.match(/[\d.]+/)[0];
+        
+        // Injecter le formulaire de modification
+        document.getElementById('editPopupBody').innerHTML = `
+            <div class="price-summary">
+                <span>Prix total:</span>
+                <span id="editTotalPrice">${prixTotal} DT</span>
+            </div>
+            <form method="post" action="../controller/reserverController.php" id="editForm">
+                <input type="hidden" name="reservation_id" value="${reservationId}">
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="prix_total" id="editHiddenTotalPrice" value="${prixTotal}">
+                <div class="form-group">
+                    <label>Nombre de places</label>
+                    <input type="number" name="nb_places" id="editNbPlaces" min="1" value="${nbPlaces}" required>
+                </div>
+                <div class="form-group">
+                    <label>Type de bagage</label>
+                    <select name="type_bagage" required>
+                        <option value="Sac à dos" ${typeBagage === 'Sac à dos' ? 'selected' : ''}>Sac à dos</option>
+                        <option value="Lunch box" ${typeBagage === 'Lunch box' ? 'selected' : ''}>Lunch box</option>
+                        <option value="Petite valise" ${typeBagage === 'Petite valise' ? 'selected' : ''}>Petite valise</option>
+                        <option value="Valise moyenne" ${typeBagage === 'Valise moyenne' ? 'selected' : ''}>Valise moyenne</option>
+                        <option value="Grande valise" ${typeBagage === 'Grande valise' ? 'selected' : ''}>Grande valise</option>
+                    </select>
+                </div>
+                <div class="popup-buttons">
+                    <button type="button" class="cancel-btn">Annuler</button>
+                    <button type="submit" class="confirm-btn">Enregistrer</button>
+                </div>
+            </form>
+        `;
+        
+        // Afficher le popup
+        document.getElementById('editPopup').classList.add('active');
+        
+        // Gestion des boutons
+        document.querySelector('#editPopup .cancel-btn').addEventListener('click', () => {
+            document.getElementById('editPopup').classList.remove('active');
+        });
+    }
+    
+    // Fermeture du popup
+    document.querySelector('#editPopup .close-popup').addEventListener('click', () => {
+        document.getElementById('editPopup').classList.remove('active');
+    });
+    
+    document.getElementById('editPopup').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('editPopup')) {
+            document.getElementById('editPopup').classList.remove('active');
+        }
+    });
+</script>
+</body>
+</html>

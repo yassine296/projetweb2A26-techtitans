@@ -221,7 +221,11 @@
     font-size: 16px;
   }
 
+<<<<<<< HEAD
   .filters {
+=======
+  /*.filters {
+>>>>>>> bfbf316 (second commit)
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
@@ -241,7 +245,48 @@
   .filter-tag:hover, .filter-tag.active {
     background-color: #f44336;
     color: white;
+<<<<<<< HEAD
   }
+=======
+  }*/
+  .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-tag {
+    background-color: #f5f5f5;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #333; /* Couleur de texte par défaut */
+    text-decoration: none; /* Pour le lien */
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-tag:hover, 
+.filter-tag.active {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Style spécifique pour l'icône historique */
+.history-tag i {
+    font-size: 14px;
+}
+
+
+
+
+
+>>>>>>> bfbf316 (second commit)
 
   .card-container {
     display: flex;
@@ -656,4 +701,274 @@ input.error, textarea.error {
 
 #modifier-form-container button[type="button"]:hover {
   background-color: #5a6268;
+<<<<<<< HEAD
 }
+=======
+}
+
+
+
+
+
+
+
+/* ==================== */
+/* POPUP DE RÉSERVATION */
+/* ==================== */
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(30px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  border: 2px solid #f44336;
+  position: relative;
+  overflow: hidden;
+}
+
+.popup-overlay.active .popup-content {
+  transform: translateY(0) scale(1);
+}
+
+.popup-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #f44336;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.popup-header h3 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #f44336;
+  font-weight: 600;
+}
+
+.close-popup {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.close-popup:hover {
+  color: #f44336;
+  transform: rotate(90deg);
+}
+
+.popup-body {
+  margin-bottom: 20px;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Formulaire */
+.reservation-form {
+  padding: 0;
+}
+
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s;
+  background-color: #f9f9f9;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #f44336;
+  box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1);
+  outline: none;
+  background-color: white;
+}
+
+
+
+.popup-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.popup-btn {
+  min-width: 140px;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+/* Bouton Confirmer */
+.confirm-btn {
+  background-color: white;
+    color: #ff3c3c;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 18px;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background-color: #e53935;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(244, 67, 54, 0.2);
+}
+
+/* Bouton Annuler */
+.cancel-btn {
+  background-color: white;
+    color: #ff3c3c;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 18px;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+}
+
+.cancel-btn:hover {
+  background-color: #f44336;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Effet actif pour les deux boutons */
+.popup-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* Affichage du prix total */
+.price-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: 1px solid #eee;
+}
+
+.price-summary span:first-child {
+  color: #555;
+}
+
+.price-summary span:last-child {
+  color: #f44336;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+
+
+
+
+.history-btn {
+  display: inline-block;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 20px 0;
+  transition: background-color 0.3s;
+}
+
+.history-btn:hover {
+  background-color: #45a049;
+}
+
+.no-reservations {
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+  color: #666;
+}
+
+
+
+
+
+
+>>>>>>> bfbf316 (second commit)
