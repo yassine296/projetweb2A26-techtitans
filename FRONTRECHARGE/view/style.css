@@ -1,7 +1,7 @@
 /* Styles généraux */
 :root {
-  --primary-color: #f44336;
-  --primary-dark: #d32f2f;
+  --primary-color: #ff3131;
+  --primary-dark: #ff3131;
   --secondary-color: #ff9800;
   --light-gray: #f5f5f5;
   --medium-gray: #e0e0e0;
@@ -335,4 +335,72 @@ body {
   .recharge-footer .footer-content {
     grid-template-columns: 1fr;
   }
+}
+/* Bonus message style */
+.bonus-message {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+    animation: fadeIn 0.5s;
+}
+
+/* Bonus Info */
+.bonus-info {
+    background-color: #fff3e0;
+    color: #e65100;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid #ff9800;
+}
+
+.bonus-info i {
+    color: #ff9800;
+    font-size: 1.2em;
+}
+
+/* Bonus Message */
+.bonus-message {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeIn 0.5s;
+}
+
+.bonus-message i {
+    font-size: 1.2em;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Confirmation Message */
+.confirmation-message {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    animation: fadeIn 0.5s;
+}
+.no-history {
+    color: #757575;
+    font-style: italic;
+    padding: 10px;
+    text-align: center;
 }
