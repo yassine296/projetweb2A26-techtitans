@@ -50,7 +50,7 @@ class ReclamationController
     // Ajouter une réclamation
     public function addReclamation($reclamation)
     {
-        $sql = "INSERT INTO reclamations (type_utilisateur, id_utilisateur, sujet, message) VALUES (:type_utilisateur, :id_utilisateur, :sujet, :message)";
+        $sql = "INSERT INTO reclamations (type_utilisateur, id_utilisateur, sujet, message, is_read) VALUES (:type_utilisateur, :id_utilisateur, :sujet, :message, FALSE)";
         $db = config::getConnexion();
         $query = $db->prepare($sql);
         try {
@@ -60,8 +60,10 @@ class ReclamationController
                 'sujet' => $reclamation->getSujet(),
                 'message' => $reclamation->getMessage()
             ]);
+            return true;
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
+            return false;
         }
     }
 
@@ -79,8 +81,10 @@ class ReclamationController
                 'sujet' => $reclamation->getSujet(),
                 'message' => $reclamation->getMessage()
             ]);
+            return true;
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
+            return false;
         }
     }
 
@@ -93,8 +97,10 @@ class ReclamationController
         $req->bindValue(':id', $id);
         try {
             $req->execute();
+            return true;
         } catch (Exception $e) {
             die('Error:' . $e->getMessage());
+            return false;
         }
     }
 
@@ -108,6 +114,62 @@ class ReclamationController
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             die('Error:' . $e->getMessage());
+        }
+    }
+    
+    // NOUVELLES MÉTHODES POUR LES NOTIFICATIONS
+    
+    // Marquer une réclamation comme lue
+    public function markAsRead($id) {
+        $sql = "UPDATE reclamations SET is_read = TRUE WHERE id = :id";
+        $db = config::getConnexion();
+        $query = $db->prepare($sql);
+        try {
+            $query->execute(['id' => $id]);
+            return true;
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+            return false;
+        }
+    }
+    
+    // Obtenir le nombre de réclamations non lues
+    public function getUnreadCount() {
+        $sql = "SELECT COUNT(*) as count FROM reclamations WHERE is_read = FALSE";
+        $db = config::getConnexion();
+        try {
+            $query = $db->query($sql);
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result['count'];
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+            return 0;
+        }
+    }
+    
+    // Récupérer toutes les réclamations non lues
+    public function getUnreadReclamations() {
+        $sql = "SELECT * FROM reclamations WHERE is_read = FALSE ORDER BY date_reclamation DESC";
+        $db = config::getConnexion();
+        try {
+            $query = $db->query($sql);
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+            return [];
+        }
+    }
+    
+    // Marquer toutes les réclamations comme lues
+    public function markAllAsRead() {
+        $sql = "UPDATE reclamations SET is_read = TRUE WHERE is_read = FALSE";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            return $query->execute();
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+            return false;
         }
     }
 }
