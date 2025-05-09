@@ -7,7 +7,7 @@ class TrajetC
     public function ajouterTrajet($trajet)
     {
         $sql = "INSERT INTO trajet 
-                VALUES (NULL, :V_DEP, :V_ARR, :DATE, :HEURE, :NB_PASS, :NB_PV, :NB_MV, :NB_GV, :PRIX)";
+                VALUES (NULL, :V_DEP, :V_ARR, :DATE, :HEURE, :NB_PASS, :NB_PV, :NB_MV, :NB_GV, :PRIX, :IDCONDUCTEUR)";
         $db = getConnexion();  
         try {
             $query = $db->prepare($sql);
@@ -21,6 +21,7 @@ class TrajetC
                 'NB_MV' => $trajet->getNB_MV(),
                 'NB_GV' => $trajet->getNB_GV(),
                 'PRIX' => $trajet->getPRIX(),
+                'IDCONDUCTEUR' => $trajet->getIdConducteur()
             ]);
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
@@ -68,7 +69,104 @@ class TrajetC
     {
         try {
             $db = getConnexion();
+            $query = $db->prepare("SELECT * FROM trajet WHERE NB_PASS > 0");
+            $query->execute();
+
+            $results = $query->fetchAll();  
+
+            $trajets = [];
+            foreach ($results as $result) {
+                $trajet = new Trajets(
+                    $result['IDT'],
+                    $result['V_DEP'],
+                    $result['V_ARR'],
+                    $result['DATE'],
+                    $result['HEURE'],
+                    $result['NB_PASS'],
+                    $result['NB_PV'],
+                    $result['NB_MV'],
+                    $result['NB_GV'],
+                    $result['PRIX']
+                );
+                $trajets[] = $trajet;  
+            }
+
+            return $trajets;  
+        } catch (PDOException $e) {
+            echo 'Erreur : ' . $e->getMessage();
+        }
+    }
+
+    public function consulterHistoriqueTrajet()
+    {
+        try {
+            $db = getConnexion();
             $query = $db->prepare("SELECT * FROM trajet");
+            $query->execute();
+
+            $results = $query->fetchAll();  
+
+            $trajets = [];
+            foreach ($results as $result) {
+                $trajet = new Trajets(
+                    $result['IDT'],
+                    $result['V_DEP'],
+                    $result['V_ARR'],
+                    $result['DATE'],
+                    $result['HEURE'],
+                    $result['NB_PASS'],
+                    $result['NB_PV'],
+                    $result['NB_MV'],
+                    $result['NB_GV'],
+                    $result['PRIX']
+                );
+                $trajets[] = $trajet;  
+            }
+
+            return $trajets;  
+        } catch (PDOException $e) {
+            echo 'Erreur : ' . $e->getMessage();
+        }
+    }
+
+    public function consulterTrajetComplet()
+    {
+        try {
+            $db = getConnexion();
+            $query = $db->prepare("SELECT * FROM trajet WHERE NB_PASS = 0");
+            $query->execute();
+            $results = $query->fetchAll();  
+
+            $trajets = [];
+            foreach ($results as $result) {
+                $trajet = new Trajets(
+                    $result['IDT'],
+                    $result['V_DEP'],
+                    $result['V_ARR'],
+                    $result['DATE'],
+                    $result['HEURE'],
+                    $result['NB_PASS'],
+                    $result['NB_PV'],
+                    $result['NB_MV'],
+                    $result['NB_GV'],
+                    $result['PRIX']
+                );
+                $trajets[] = $trajet;  
+            }
+
+            return $trajets;  
+        } catch (PDOException $e) {
+            echo 'Erreur : ' . $e->getMessage();
+        }
+    }
+
+    public function consulterTrajetSemaine()
+    {
+        try {
+            $db = getConnexion();
+            $date = date('Y-m-d', strtotime('+1 day'));
+            $query = $db->prepare("SELECT * FROM trajet WHERE DATE = :date");
+            $query->execute(['date' => $date]);
             $query->execute();
 
             $results = $query->fetchAll();  

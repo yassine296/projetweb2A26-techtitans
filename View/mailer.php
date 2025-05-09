@@ -13,11 +13,11 @@ function sendReservationEmail($to, $subject, $content) {
     try {
         // Paramètres SMTP pour Mailtrap
         $mail->isSMTP();
-        $mail->Host = 'sandbox.smtp.mailtrap.io';
+        $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'a04d74824d17b1'; // Remplacez par vos identifiants
-        $mail->Password = '23e567e2fa49c0'; 
-        $mail->Port = 2525;
+        $mail->Username = 'zariatyassine1@gmail.com'; // Remplacez par vos identifiants
+        $mail->Password = 'ynvp ocpr pkry kedf'; 
+        $mail->Port = 587;
         $mail->SMTPSecure = 'tls';
         $mail->SMTPDebug = 0;
         

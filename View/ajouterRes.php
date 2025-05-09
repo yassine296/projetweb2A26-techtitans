@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             // 2. Préparation du contenu des emails
             $passenger_content = "
-                <h1 style='color: #e53935;'>Confirmation de réservation</h1>
+                <h1 style='color: #e53935;'>CONFIRMATION DE RESERVATION</h1>
                 <p>Bonjour,</p>
                 <p>Votre réservation a été confirmée avec succès.</p>
                 <h3>Détails du trajet :</h3>
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ";
 
             $driver_content = "
-                <h1 style='color: #e53935;'>Nouvelle réservation</h1>
+                <h1 style='color: #e53935;'>NOUVELLE RESERVATION</h1>
                 <p>Bonjour,</p>
                 <p>Vous avez une nouvelle réservation pour votre trajet.</p>
                 <h3>Détails :</h3>

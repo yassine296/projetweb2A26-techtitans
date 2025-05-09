@@ -30,13 +30,14 @@
     $trajet->setNB_MV($MV);
     $trajet->setNB_GV($PV);
     $trajet-> setPRIX($prix);
+    $trajet ->setIdConducteur(49);
 
     $trajetController = new TrajetC();
     $result = $trajetController->ajouterTrajet($trajet);
 
     if ($result) {
       $trajet = new Trajets(); // On vide les champs du formulaire
-      header("Location: Trajet.php?success=1");
+      header("Location: Trajet.php?success=0");
        exit();
     } else {
       $trajet = new Trajets(); // On vide les champs du formulaire

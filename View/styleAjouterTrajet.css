@@ -250,6 +250,32 @@
   transition: all 0.3s ease;
 }
 
+.tab-btn {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  position: relative;
+}
+
+.tab-btn.active {
+  color: #f44336;
+  font-weight: 600;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #f44336;
+}
+
 .filter-tag:hover, .filter-tag.active {
   background-color: #f44336;
   color: white;
@@ -324,6 +350,34 @@
   display: flex;
   flex-direction: column;
 }
+
+.loading-spinner {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.loading-spinner i {
+  margin-right: 10px;
+}
+
+.error {
+  color: #f44336;
+  text-align: center;
+  padding: 20px;
+}
+
+.custom-marker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 16px;
+  text-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+.custom-marker.departure { color: #4CAF50; }
+.custom-marker.arrival { color: #F44336; }
 
 
 /* Détails trajets */

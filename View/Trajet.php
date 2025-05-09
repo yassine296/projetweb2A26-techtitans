@@ -74,12 +74,12 @@
     </div>
 
     <div class="filters">
-      <div class="filter-tag active">Tous</div>
-      <div class="filter-tag">Aujourd'hui</div>
-      <div class="filter-tag">Demain</div>
-      <div class="filter-tag">Cette semaine</div>
-      <div class="filter-tag">Moins de 10 DT</div>
+      <button class="tab-btn active" onclick="filterTrajets('Vos Trajets')">Vos Trajets</button>
+      <button class="tab-btn" onclick="filterTrajets('Historique')">Historique</button>
+      <button class="tab-btn" onclick="filterTrajets('complet')">Trajets complet</button>
+      <button class="tab-btn" onclick="filterTrajets('semaine')">Cette semaine</button>
     </div>
+
 
     <div class="page-container">
       <div class="cards-wrapper">
@@ -136,6 +136,9 @@
       </div>
     </div>
   </div>
+
+
+
   <!-- Overlay style popup -->
   <div class="popup-overlay" id="overlay">
     <div class="popup-content">
@@ -343,6 +346,74 @@
         crossorigin="">
   </script>
   <script src="js/maps.js"></script>
+
+  <script>
+    const buttons = document.querySelectorAll('.tab-btn');
+
+    // 🔁 Appliquer l'état "active" enregistré au chargement de la page
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTab = localStorage.getItem('activeTab');
+      if (savedTab) {
+        buttons.forEach(btn => {
+          if (btn.textContent.trim() === savedTab) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+    });
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        // 🔁 Mise à jour du style "active"
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        // 💾 Enregistrer le bouton actif dans le localStorage
+        localStorage.setItem('active', button.textContent.trim());
+      });
+    });
+
+    async function filterTrajets(filtre) {
+      try {
+        // UI Loading state
+        const cardsWrapper = document.querySelector('.cards-wrapper');
+
+        // Requête AJAX
+        const response = await fetch(`filterTrajets.php?filtre=${encodeURIComponent(filtre)}`);
+        if (!response.ok) throw new Error('Erreur serveur');
+        
+        const html = await response.text();
+        cardsWrapper.innerHTML = html;
+
+        // Réinitialiser les cartes
+        if (typeof MapManager !== 'undefined' && MapManager.initAllMaps) {
+          await MapManager.initMap();
+        } else {
+          console.error('MapManager non disponible');
+        }
+
+        // Mettre à jour l'UI
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.textContent.trim() === filtre);
+        });
+        
+        document.querySelector('.results-count').textContent = 
+          `${document.querySelectorAll('.card-container').length} résultats`;
+
+      } catch (error) {
+        console.error('Erreur filtrage:', error);
+        document.querySelector('.cards-wrapper').innerHTML = `
+          <div class="error-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Erreur lors du chargement</span>
+          </div>
+        `;
+      }
+    }
+  </script> 
+
 
   <?php 
     if (isset($_GET['success']) && $_GET['success'] == 1): ?>
